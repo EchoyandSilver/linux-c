@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set +x
+#RUN_TARGET=arm
+RUN_TARGET=x86
+SOURCE_DIR=`pwd`
+BUILD_DIR=${BUILD_DIR:-./build}
+BUILD_TYPE=${BUILD_TYPE:-debug_$RUN_TARGET}
+INSTALL_DIR=${INSTALL_DIR:-./${BUILD_TYPE}-install}
+BUILD_NO_EXAMPLES=${BUILD_NO_EXAMPLES:-0}
+echo "$BUILD_TYPE"
+mkdir -p $BUILD_DIR/$BUILD_TYPE \
+  && cd $BUILD_DIR/$BUILD_TYPE \
+  && cmake \
+           -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+           -DRUN_TARGET=$RUN_TARGET \
+           -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
+           -DCMAKE_BUILD_NO_EXAMPLES=$BUILD_NO_EXAMPLES \
+           $SOURCE_DIR \
+  && make $* 
