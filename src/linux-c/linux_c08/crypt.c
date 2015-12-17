@@ -1,6 +1,7 @@
 #define _XOPEN_SOURCE
 #include <unistd.h> 
 #include <string.h>
+#define _GNU_SOURCE
 #include <crypt.h>
 
 int main()

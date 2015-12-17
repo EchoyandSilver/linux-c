@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include <stdio.h>
 int main()
 {
 	//产生随机数
