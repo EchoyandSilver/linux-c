@@ -19,9 +19,15 @@
 void handler(int sig);
 int main(int argc,char *argv[])
 {
-	if(signal(SIGINT,handler) == SIG_ERR)
-		ERR_EXIT("signal error");
-	for(;;);
+	struct sigaction act;
+	act.sa_handler = handler;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;	
+
+	if(sigaction(SIGINT, &act, NULL) < 0)
+		ERR_EXIT("sigaction error");
+	for(;;)
+		pause();	
 	return 0;	
 }
 
