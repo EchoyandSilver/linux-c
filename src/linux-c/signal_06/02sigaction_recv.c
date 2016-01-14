@@ -16,18 +16,13 @@
 		exit(EXIT_FAILURE);\
 	}while(0)
 
-void handler(int sig);
+void handler(int,siginfo_t *, void *);
 int main(int argc,char *argv[])
 {
 	struct sigaction act;
-	act.sa_handler = handler;
+	act.sa_sigaction = handler;
 	sigemptyset(&act.sa_mask);
-	act.sa_flags = 0;	
-
-	sigset_t s;
-	sigemptyset(&s);
-	sigaddset(&s,SIGINT);
-	sigprocmask(SIG_BLOCK,&s,NULL);	
+	act.sa_flags = SA_SIGINFO;	
 
 	if(sigaction(SIGINT, &act, NULL) < 0)
 		ERR_EXIT("sigaction error");
@@ -36,7 +31,7 @@ int main(int argc,char *argv[])
 	return 0;	
 }
 
-void handler(int sig)
+void handler(int sig,siginfo_t *info, void *ctx)
 {
-	printf("recv a sig=%d\n",sig);
+	printf("recv a sig=%d data=%d data=%d\n",sig,info->si_value.sival_int,info->si_int);
 }

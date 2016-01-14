@@ -19,24 +19,23 @@
 void handler(int sig);
 int main(int argc,char *argv[])
 {
-	struct sigaction act;
-	act.sa_handler = handler;
-	sigemptyset(&act.sa_mask);
-	act.sa_flags = 0;	
+	if(argc != 2)
+	{
+		fprintf(stderr,"Usage %s pid\n",argv[0]);
+		exit(EXIT_FAILURE);
+	}
 
-	sigset_t s;
-	sigemptyset(&s);
-	sigaddset(&s,SIGINT);
-	sigprocmask(SIG_BLOCK,&s,NULL);	
-
-	if(sigaction(SIGINT, &act, NULL) < 0)
-		ERR_EXIT("sigaction error");
-	for(;;)
-		pause();	
+	pid_t pid;
+	union sigval v;
+	v.sival_int = 100;
+	sigqueue(pid,SIGINT,v);
+	sigqueue(pid,SIGINT,v);
+	sigqueue(pid,SIGINT,v);
+	sigqueue(pid,SIGRTMIN+1,v);
+	sigqueue(pid,SIGRTMIN+1,v);
+	sigqueue(pid,SIGRTMIN+1,v);
+	sleep(3);
+	kill(pid,SIGUSR1);
 	return 0;	
 }
 
-void handler(int sig)
-{
-	printf("recv a sig=%d\n",sig);
-}

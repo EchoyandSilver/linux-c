@@ -27,9 +27,13 @@ int main(int argc,char *argv[])
 	sigset_t s;
 	sigemptyset(&s);
 	sigaddset(&s,SIGINT);
-	sigprocmask(SIG_BLOCK,&s,NULL);	
-
+	sigaddset(&s,SIGRTMIN+1);
+	sigprocmask(SIG_BLOCK,&s,NULL);
 	if(sigaction(SIGINT, &act, NULL) < 0)
+		ERR_EXIT("sigaction error");
+	if(sigaction(SIGRTMIN, &act, NULL) < 0)
+		ERR_EXIT("sigaction error");
+	if(sigaction(SIGUSR1, &act, NULL) < 0)
 		ERR_EXIT("sigaction error");
 	for(;;)
 		pause();	
@@ -38,5 +42,14 @@ int main(int argc,char *argv[])
 
 void handler(int sig)
 {
-	printf("recv a sig=%d\n",sig);
+	if(sig == SIGINT || sig == SIGRTMIN)
+		printf("recv a sig=%d\n",sig);
+	else if(sig == SIGUSR1)
+	{
+		sigset_t s;
+		sigemptyset(&s);
+		sigaddset(&s,SIGINT);
+		sigaddset(&s,SIGRTMIN+1);
+		sigprocmask(SIG_UNBLOCK,&s,NULL);
+	}
 }
