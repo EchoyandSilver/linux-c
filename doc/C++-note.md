@@ -1059,4 +1059,102 @@
 		3.placement new	(不分配内存)
 		
 		
-### 26 
+### 26 string_p
+####	
+	
+	标准库的三种类型：
+	string		字符串			char*
+	vector		动态数组		静态数组［］
+	map			key/value		内部是以树的形式存储:算法复杂度O(log2N)，哈析表：算法复杂度O(1)
+	
+	STL：内存分配器，STL六大组件之一。
+	
+#### 本章目标
+* string介绍
+* string对象的定义和初始化
+* 常用成员函数
+
+#### 1.标准库string类型
+* string类型支持长度可变的字符串，C++标准库将负责管理与存储字符相关的内存，以及提供各种有用的操作。
+* typedef basic_string<char>string;
+* typedef basic_string<wchar_t>wstring;
+* 要使用string类型对象，必须包含相关的头文件
+
+		＃include <string>
+		using std::string;
+		
+#### 2.string对象的定义和初始化
+* string s1;	//默认构造函数，s1为空串
+* string s2(s1);	//将s2初始化为s1的的一个副本
+* string s3("value");	//将s3初始化为一个字符串字面值副本
+* string s4(n,'c');	// 将s4初始化为字符‘c’的n个副本
+
+		查找帮助(Microsoft Visual Studio) F1键
+		
+#### 3.常用的成员函数
+	成员函数				功能描述
+	size()				得到字符串的大小
+	length()			 	同上
+	empty() 			判断是否为空
+	substr()			截取字符串
+	find()				在字符串中查找字符或者字符串
+	rfind()				反向查找
+	replace()			替代
+	compare()			比较字符串
+	insert()			插入字符
+	append()			追加字符
+	swap()				交换字符串
+	重载运算符			[],+=,=,+,>,<,>=,<=,!=,>>,<<等
+	
+	
+### 27 vector
+	
+	用string模版类，去除左右空格的实现。
+
+#### 本章目标
+* vector介绍
+* vector对象初始化
+* vector常用成员函数
+
+#### 1.标准库的vector类型
+* vector是同一种类型的对象的集合。
+* vector的数据结构很像数组，能非常高效和方便地访问单个元素。(动态数组)
+* vector是一个类模版（class template）。
+* 要使用vector必须包含相关头文件
+
+		＃include <vector>
+		using std::vector;
+		
+#### 2.vector对象的初始化
+* vector类定义了好几种构造函数
+		
+		1.vector<T> v1;
+		//vector保存类型为T的对象。默认构造函数v1为空
+		2.vector<T> v2(v1);//v2是v1的一个副本
+		3.vector<T> v3(n, i);//v3包括n个值为i的元素
+		4.vector<T> v4(n);
+			//v4含有值初始化的元素的n个副本
+			
+#### 3.vector成员函数
+	
+	成员函数					功能描述
+	size()					返回元素的个数
+	clear()					清除所有元素
+	empty()					判断是否为空
+	push_back()				在末尾添加一个元素
+	pop_back()				删除最后一个元素
+	erase()					删除某个元素
+	insert()				插入某个元素
+	［］						返回元素
+	＝						复制副本
+	重载运算符				[],=,>,<,>=,<=,!=,==等
+	
+* string和vector可以将它看成是一种容器，通过迭代器来遍历容器(迭代器可以将它看成是泛型指针)，vector< int >看作int*.
+
+* 六大组件：容器、迭代器、算法、函数对象、适配器、内存分配器。
+	
+		remove是一个算法需要头文件 ＃include <algorithm>	
+
+### 28 map
+#### 本章目标
+* 
