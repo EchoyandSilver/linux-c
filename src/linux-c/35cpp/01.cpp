@@ -71,9 +71,10 @@ class ShapeFactory
 public:
 	static Shape* CreateShape(const string& name)
 	{
+		Shape* ps;
 		if(name == "Circle")
 		{
-			ps = new Circlr;
+			ps = new Circle;
 		}
 		else if(name == "Square")
 		{
@@ -103,11 +104,11 @@ int main(void)
 	v.push_back(ps);
 */
 	Shape* ps;
-	ps = ShapeFactory::CreatShape("Circle");
+	ps = ShapeFactory::CreateShape("Circle");
 	v.push_back(ps);
-	ps = ShapeFactory::CreatShape("Square");
+	ps = ShapeFactory::CreateShape("Square");
 	v.push_back(ps);
-	ps = ShapeFactory::CreatShape("Rectangle");
+	ps = ShapeFactory::CreateShape("Rectangle");
 	v.push_back(ps);
 	
 	DrawAllShapes(v);
