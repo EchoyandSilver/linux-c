@@ -1586,4 +1586,21 @@
 * 虚继承对类的大小的影响
 * 虚函数对类的大小的影响
 
-I
+### 38 RTTI
+#### 本章目标
+* RTTI(runtime type information)
+* dynamic_cast运算符
+* typeid运算符		(返回的是type info引用)
+* type_info
+
+#### 转型介绍
+	(1)静态转型	（不安全的转型）
+	static_cast 用在编译器认可的转型
+	reinterpret_cast用在编译器不认可的转型
+	const_cast去除常量限定
+	(2)动态转型
+	dynamic_cast 安全的向下转型
+	
+	reinterpret_cast 不作任何对齐操作
+	() C中还是会做一些对齐操作的
+	
