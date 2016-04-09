@@ -44,18 +44,23 @@ void set_flag(int fd,int flags)
 {
 	int val;
 	val = fcntl(fd,F_GETFL,0);
-		ERR_EXIT("fcntl get flag error");
+	if(val == -1)
+		ERR_EXIT("fcntl get flag error 1");
+
 	val |= flags;
 	if(fcntl(fd,F_SETFL) < 0)
-		ERR_EXIT("fcntl get flag error");
+		ERR_EXIT("fcntl set flag error 1");
 }
 
 void clr_flag(int fd,int flags)
 {
 	int val;	
 	val = fcntl(fd,F_GETFL,0);
-		ERR_EXIT("fcntl get flag error");
+	if(val == -1)
+		ERR_EXIT("fcntl get flag error 2");
+
 	val &= ~flags;
 	if(fcntl(fd,F_SETFL) < 0)
-		ERR_EXIT("fcntl get flag error");
+		ERR_EXIT("fcntl set flag error 2");
 }
+
