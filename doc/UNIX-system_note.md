@@ -509,7 +509,35 @@
 
 		int atexit(void (*function)(void));
 		
-#### 04.execve(替换进程映像)
+#### 04.execve(替换进程映像)（系统调用）
 
 	int execve(const char *filename, char *const argv[], char *const envp[]);
 	
+	
+### 05 进程（五）
+#### 本章目标
+* exec替换进程映像
+* exec关联函数组（execl、execlp、execle、execv、execvp)(C库函数)
+
+#### 01.exec替换进程映像
+* 在进程的创建上Unix采用了一个独特的方法，它将进程创建与加载一个新进程映像分离。这样的好处是有更多的余地对两种操作进行管理。
+* 当我们创建了一个进程后，通常将子进程替换成新的进程映像，这可以用exec系列的函数来进行。当然，exec系列的函数也可以将当前进程替换掉。
+
+#### 02.exec关联函数组
+* 包含头文件<unistd.h>
+* 功能：用exec函数可以把当前进程替换为一个新进程。exec名下是由多个关联函数组成的一个完整系列，头文件<unistd.h>
+* 原型：
+
+		int execl(const char *path, const char *arg, ...);
+		int execlp(const char *file, const char *arg, ...);
+		int execle(const char *path, const char *arg, ..., char* const envp[]);
+		...
+		int execv(const char *path, const char *argv[]);
+		int execvp(const char *file, const char *argv[]);
+		
+* 参数
+* path参数表示你要启动程序的名称包括路径名。
+* arg参数表示启动程序所带的参数。
+* 返回值：成功返回0，失败返回－1。
+* 名字最后一个字母是“p”的函数会搜索PATH环境变量去查找新程序的可执行文件。如果可执行文件不在PATH定义的路径上，就必须把包括子目录在内的绝对文件名作为一个参数传递给这些函数。
+
