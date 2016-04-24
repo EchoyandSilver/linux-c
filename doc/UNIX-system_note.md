@@ -694,7 +694,7 @@
 #### 05.进程对信号的三种响应
 * 忽略信号
 
-		不采取任何操作、有两个信号不能被忽略:SIGKILL和SIHSTOP。
+		不采取任何操作、有两个信号不能被忽略:SIGKILL和SIGSTOP。
 		
 * 捕捉并处理信号
 
@@ -810,3 +810,36 @@
 * 信号阻塞与未央
 * 信号集操作函数
 * sigprocmask
+
+#### 01.信号在内核中的表示(2-1)
+* 执行信号的处理动作称为信号抵达（Delivery）,信号从产生到抵达之间的状态，称为信号未决(Pending)。进程可以选择阻塞（Block）某个信号。被阻塞的信号产生时将保持在未决状态，直到进程解除对此信号的阻塞，才执行抵达的动作。注意，阻塞和忽略是不同的，只要信号被阻塞就不会不会抵达，而忽略是在抵达之后可选的一种处理动作。
+
+#### 02.信号操作函数
+* `#`include < signal.h>
+* int sigemptyset(sigset_t *set);
+* int sigfillset(sigset_t *set);
+* int sigaddset(sigset_t *set, int signo);
+* int sigdelset(sigset_t *set, int signo);
+* int sigismember(const sigset_t *set, int signo);
+
+#### 03.sigprocmask(2-1)
+* `#`include < signal.h>
+* int sigprocmask(int how, const sigset_ t *set, sigset_t *oset);
+* 功能：读取或改进进程的信号屏蔽字。
+* 返回值：若成功则为0，若失败则为－1。
+* 如果oset是非空指针，则读取进程的当前信号屏蔽字通过oset参数传出。如果set是非空指针，则更改进程的信号屏蔽字，参数how指示如何更改。如果oset和set都是非空指针，则先将原来的信号屏蔽字备份到oset里，然后根据set和how参数更改信号屏蔽字。假设当前的信号屏蔽字为mask，下表说明了how参数的可选值。
+
+#### 04.sigprocmask(2-2)
+|				|						|
+|:---------- | :---------------- |
+| SIG_BLOCK	| set包含了我们希望添加到当前信号屏蔽字的信号，相当于mask=mask｜set
+| SIG_UNBLOCK| set包含了我们希望从当前信号屏蔽字中解除阻塞的信号，相当于mask=mask&~set
+| SIG_SETMASK| 设置当前信号屏蔽字为set所指向的值，相当于mask=set
+
+
+### 05 信号（五）
+#### 本章目标
+* sigaction函数
+* sigaction结构体
+* sigaction示例
+
