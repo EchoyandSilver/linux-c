@@ -830,7 +830,7 @@
 * 如果oset是非空指针，则读取进程的当前信号屏蔽字通过oset参数传出。如果set是非空指针，则更改进程的信号屏蔽字，参数how指示如何更改。如果oset和set都是非空指针，则先将原来的信号屏蔽字备份到oset里，然后根据set和how参数更改信号屏蔽字。假设当前的信号屏蔽字为mask，下表说明了how参数的可选值。
 
 #### 04.sigprocmask(2-2)
-|				|						|
+|	 			|						|
 |:---------- | :---------------- |
 | SIG_BLOCK	| set包含了我们希望添加到当前信号屏蔽字的信号，相当于mask=mask｜set
 | SIG_UNBLOCK| set包含了我们希望从当前信号屏蔽字中解除阻塞的信号，相当于mask=mask&~set
@@ -841,5 +841,34 @@
 #### 本章目标
 * sigaction函数
 * sigaction结构体
-* sigaction示例
+* sigaction示例 (**见signal_05下代码**)
+
+#### 01.sigaction
+* 包含头文件 <signal.h>
+* 功能：sigaction函数用于改变进程接收到特定信号后的行为。
+* 原型：int sigaction(int signum,const struct sigaction *act,const struct sigaction *old);
+* 参数
+
+		1.该函数的第一个参数为信号的值，可以为除SIGKILL及SIGSTOP外的任何一个特定有效的信号(为这两个信号定义自己的处理函数，将导致信号安装错误)
+		2.第二个参数是指向结构sigaction的一个实例的指针，在结构sigaction的实例中，指定了对特定信号的处理，可以为空，进程会以缺省的方式对信号处理
+		3.第三个参数oldact指向的对象用来保存原来对应信号的处理，可以指定oldact为NULL
+		
+* 返回值：函数成功返回0，失败返回－1.
+
+#### 02.sigaction结构体
+ * 第二个参数最为重要，其中包含了对指定信号的处理、信号所传递的信息、信息处理函数执行过程应屏蔽掉哪些函数等等：
+
+ 		struct sigaction{
+ 			void (*sa_handler)(int);
+ 			void (*sa_handler)(int, siginfo_t *, void *);
+ 			sigset_t sa_mask;
+ 			int sa_flags;
+ 			void (*sa_restorer)(void);
+ 		};
+ 		
+
+### 06 信号（六）
+* sigqueue函数
+* sigval联合体
+* sigqueue示例
 
