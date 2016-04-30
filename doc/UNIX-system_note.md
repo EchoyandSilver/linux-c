@@ -868,7 +868,108 @@
  		
 
 ### 06 信号（六）
+#### 本章目标
 * sigqueue函数
 * sigval联合体
 * sigqueue示例
 
+#### 01.sigqueue函数
+* 功能：新的发送信号系统调用，主要针对实时信号提出的支持信号带有参数，与函数sigaction()配合使用。
+* 原型：int sigqueue(pid_t pid, int sig, const union sigval value);
+* 参数：sigqueue的第一个参数指定接收信号的进程ID，第二个参数确定即将发送的信号，第三个参数是一个联合数据结构union sigval,指定了信号传递的参数，即通常所说的4字节值。
+* 返回值：成功返回0，失败返回－1.
+
+#### 02.sigval联合体
+* sigqueue()比kill()传递；更多的附加信息，但sigqueue()只能向一个进程发送信号，而不能发送信号给一个进程组。
+
+		typedef union sigval
+		{
+			int sival_int;
+			void *sival_ptr;
+		}sigval_t;
+		
+
+### 07 信号（七）
+#### 本章目标
+* 三种不同精度的睡眠
+* 三种时间结构
+* setitimer
+* getitimer
+
+#### 01.三种不同精度的睡眠
+* unsigned int sleep(unsigned int seconds);
+* int usleep(useconds_t usec);
+* int nanosleep(const struct timespec *req,struct timespec *rem);
+	
+		int n = 5;
+		sleep(n);
+		(1)
+		do{
+			n = sleep(n);
+		}while(n > 0)
+		(2)
+		while(n=sleep(n));
+				
+#### 02.三种时间结构
+	time_t
+	
+	struct timeval{
+		long tv_sec;	/*second*/
+		long tv_usec;	/*microseconds*/
+	};
+	
+	struct timepec{
+		time_t	tv_sec;	/*second*/
+		long	tv_nsec	/*nanoseconds*/
+	};
+
+#### 03.setitimer
+* 包含头文件 < sys/time.h>
+* 功能：setitimer()比alarm功能强大，支持3种类型的定时器
+* 原型：int setitimer(int which,const struct itimerval *value, struct itimerval *ovalue);
+* 参数：
+
+		第一个参数which指定定时器类型
+		第二个参数是结构itimerval的一个实例，结构itimerval形式
+		第三个参数可不做处理
+		
+* 返回值：成功返回0，失败返回－1
+
+		alarm:产生SIGALARM信号
+		setitimer:间歇性的产生SIGALARM信号
+		
+* ITIMER_REL:经过指定的时间后，内核将发送SIGALARM信号给本进程。
+* ITIMER_VIRTUAL:程序在用户空间执行指定的时间后，内核将发送SIGVTALRM信号给本进程。
+* ITIMER_PROF:进程在内核空间中执行时，时间计数会减少，通常与ITIMER_VIRTUAL共用，代表进程在用户空间与内核空间中运行指定时间后，内核将发送SIGPROF信号给本进程。
+
+## 4章 Linux系统编程之管道篇
+### 01 管道（一）
+#### 本章目标
+* 管道
+* 匿名管道pipe
+* 管道示例程序
+
+#### 01.什么是管道
+* 管道是Unix中最古老的进程间通信的形式。
+* 我们把从一个进程连接到另一个进程的一个数据流称为一个“管道”。
+
+	  	管道本质：固定大小的内核缓冲区。
+	  	
+* 管道是半双工的，数据只能向一个方向流动；需要双方通信时，需要建立起两个管道。
+* 只能用于具有共同祖先的进程（具有亲缘关系的进程）之间进行通信；通常，一个管道由一个进程创建，然后该进程调用fork，此后父、子进程之间就可以应用该管道。
+
+#### 02.匿名管道pipe
+* 包含头文件< unistd.h>
+* 功能：创建一个无名管道
+* 原型：int pipe(int fd[2]);
+* 参数
+
+		fd:文件描述符数组，其中fd[0]表示读端，fd[1]表示写端
+		
+* 返回值：成功返回0，失败返回错误代码。
+
+
+### 02.管道（二）
+#### 本章目标
+* 管道读写规则
+* 
